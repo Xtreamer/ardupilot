@@ -14,6 +14,10 @@
 #define AP_BATT_MONITOR_VOLTAGE_ONLY        3
 #define AP_BATT_MONITOR_VOLTAGE_AND_CURRENT 4
 
+// AUX battery monitor
+#define AP_AUX_BATT_MONITOR_DISABLED     0
+#define AP_AUX_BATT_MONITOR_ENABLED		1
+
 // setup default mag orientation for each board type
 #if CONFIG_HAL_BOARD == HAL_BOARD_APM1
  # define AP_BATT_VOLT_PIN                  0       // Battery voltage on A0
@@ -58,6 +62,10 @@
  # define AP_BATT_CURR_AMP_PERVOLT_DEFAULT  17.0
 #endif
 
+// AUX battery monitor
+#define AP_BATT_AUX_VOLT_PIN				6
+#define AP_BATT_AUX_VOLTDIVIDER_DEFAULT  10.1
+
 // Other values normally set directly by mission planner
 // # define AP_BATT_VOLTDIVIDER_DEFAULT 15.70   // Volt divider for AttoPilot 50V/90A sensor
 // # define AP_BATT_VOLTDIVIDER_DEFAULT 4.127   // Volt divider for AttoPilot 13.6V/45A sensor
@@ -100,6 +108,21 @@ public:
 
     /// exhausted - returns true if the voltage remains below the low_voltage for 10 seconds or remaining capacity falls below min_capacity
     bool exhausted(float low_voltage, float min_capacity_mah);
+	
+	/// monitoring - returns whether we are monitoring aux voltage
+    int8_t monitoring_aux() const { return _aux_volt_enabled; }
+
+    /// monitoring - returns whether we are monitoring voltage only or voltage and current
+    void set_monitoring_aux(uint8_t mon) { _aux_volt_enabled.set(mon); }
+
+    /// Battery voltage.  Initialized to 99 to prevent low voltage events at startup
+    float voltage_aux() const { return _voltage_aux; }
+
+	/// exhausted - returns true if the voltage remains below the low_voltage for 10 seconds or remaining capacity falls below min_capacity
+    bool exhausted_aux(float low_voltage, float min_capacity_mah);
+
+
+
 
     static const struct AP_Param::GroupInfo var_info[];
 
@@ -109,10 +132,14 @@ protected:
     AP_Int8     _monitoring;                /// 0=disabled, 3=voltage only, 4=voltage and current
     AP_Int8     _volt_pin;                  /// board pin used to measure battery voltage
     AP_Int8     _curr_pin;                  /// board pin used to measure battery current
-    AP_Float    _volt_multiplier;           /// voltage on volt pin multiplied by this to calculate battery voltage
+    AP_Float    _volt_multiplier;           /// voltage on volt pin multiplied by this to calculate battery voltage	
     AP_Float    _curr_amp_per_volt;         /// voltage on current pin multiplied by this to calculate current in amps
     AP_Float    _curr_amp_offset;           /// offset voltage that is subtracted from current pin before conversion to amps
     AP_Int32    _pack_capacity;             /// battery pack capacity less reserve in mAh
+
+	AP_Int8		_aux_volt_enabled;		/// 0=disable AUX battery monitoring, 1=enable
+	AP_Int8     _aux_volt_pin;           /// board pin used to measure battery voltage
+	AP_Float    _aux_volt_multiplier;    /// voltage on volt pin multiplied by this to calculate battery voltage
 
     /// internal variables
     float       _voltage;                   /// last read voltage
@@ -121,8 +148,13 @@ protected:
     uint32_t    _last_time_micros;          /// time when current was last read
     uint32_t    _low_voltage_start_ms;      /// time when voltage dropped below the minimum
 
+	float       _voltage_aux;				/// last read AUX voltage
+	uint32_t    _low_voltage_aux_start_ms;  /// time when AUX voltage dropped below the minimum
+
     AP_HAL::AnalogSource *_volt_pin_analog_source;
     AP_HAL::AnalogSource *_curr_pin_analog_source;
+
+	AP_HAL::AnalogSource *_aux_volt_pin_analog_source;
 
 };
 #endif  // AP_BATTMONITOR_H
