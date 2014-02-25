@@ -84,9 +84,8 @@ AP_BattMonitor::AP_BattMonitor(void) :
     _voltage(0),
     _current_amps(0),
     _current_total_mah(0),
-    _last_time_micros(0)
-
-	_voltage_aux(0);
+    _last_time_micros(0),
+	_voltage_aux(0)
 {
     AP_Param::setup_object_defaults(this, var_info);
 }
@@ -97,8 +96,7 @@ AP_BattMonitor::init()
 {
     _volt_pin_analog_source = hal.analogin->channel(_volt_pin);
     _curr_pin_analog_source = hal.analogin->channel(_curr_pin);
-
-	_aux_volt_pin_analog_source = hal.analogin->channel(_AUX_VOLT_PIN);
+	_aux_volt_pin_analog_source = hal.analogin->channel(_aux_volt_pin);
 }
 
 // read - read the voltage and current
