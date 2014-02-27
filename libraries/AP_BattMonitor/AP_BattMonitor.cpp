@@ -53,25 +53,25 @@ const AP_Param::GroupInfo AP_BattMonitor::var_info[] PROGMEM = {
     // @User: Standard
     AP_GROUPINFO("CAPACITY", 6, AP_BattMonitor, _pack_capacity, AP_BATT_CAPACITY_DEFAULT),
 
-	// @Param: AUX_VOLT_MONITOR
+	// @Param: AUX_MONITOR
     // @DisplayName: Battery monitoring
     // @Description: Controls enabling monitoring of the battery's voltage and current
     // @Values: 0:Disabled,3:Voltage Only,4:Voltage and Current
     // @User: Standard
-    AP_GROUPINFO("AUX_VOLT_MONITOR", 0, AP_BattMonitor, _aux_volt_enabled, AP_AUX_BATT_MONITOR_DISABLED),
+    AP_GROUPINFO("AUX_MONITOR", 7, AP_BattMonitor, _aux_volt_enabled, AP_AUX_BATT_MONITOR_DISABLED),
 
-    // @Param: AUX_VOLT_PIN
+    // @Param: AUX_PIN
     // @DisplayName: Battery Voltage sensing pin
     // @Description: Setting this to 0 ~ 13 will enable battery current sensing on pins A0 ~ A13. For the 3DR power brick on APM2.5 it should be set to 13. On the PX4 it should be set to 100. On the Pixhawk powered from the PM connector it should be set to 2.
     // @Values: -1:Disabled, 0:A0, 1:A1, 2:Pixhawk, 13:A13, 100:PX4
     // @User: Standard
-    AP_GROUPINFO("AUX_VOLT_PIN", 6, AP_BattMonitor, _aux_volt_pin, AP_BATT_AUX_VOLT_PIN),
+    AP_GROUPINFO("AUX_PIN", 8, AP_BattMonitor, _aux_volt_pin, AP_BATT_AUX_VOLT_PIN),
 
-	// @Param: AUX_VOLT_MULT
+	// @Param: AUX_MULT
     // @DisplayName: Voltage Multiplier
     // @Description: Used to convert the voltage of the voltage sensing pin (BATT_VOLT_PIN) to the actual battery's voltage (pin_voltage * VOLT_MULT). For the 3DR Power brick on APM2 or Pixhawk, this should be set to 10.1. For the Pixhawk with the 3DR 4in1 ESC this should be 12.02. For the PX4 using the PX4IO power supply this should be set to 1.
     // @User: Advanced
-    AP_GROUPINFO("AUX_VOLT_MULT", 3, AP_BattMonitor, _aux_volt_multiplier, AP_BATT_AUX_VOLTDIVIDER_DEFAULT),
+    AP_GROUPINFO("AUX_MULT", 9, AP_BattMonitor, _aux_volt_multiplier, AP_BATT_AUX_VOLTDIVIDER_DEFAULT),
 
     AP_GROUPEND
 };
@@ -172,7 +172,7 @@ bool AP_BattMonitor::exhausted(float low_voltage, float min_capacity_mah)
     return false;
 }
 
-bool AP_BattMonitor::exhausted_aux(float low_voltage, float min_capacity_mah)
+bool AP_BattMonitor::exhausted_aux(float low_voltage)
 {
     // return immediately if disabled
     if (_aux_volt_enabled == AP_AUX_BATT_MONITOR_DISABLED) {

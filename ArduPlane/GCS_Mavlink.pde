@@ -236,9 +236,13 @@ static NOINLINE void send_extended_status1(mavlink_channel_t chan)
         battery.voltage() * 1000, // mV
         battery_current,        // in 10mA units
         battery_remaining,      // in %
+		battery.voltage_aux() * 1000,
         0, // comm drops %,
         0, // comm drops in pkts,
-        0, 0, 0, 0);
+        0,
+		0,
+		0,
+		0);
 }
 
 static void NOINLINE send_location(mavlink_channel_t chan)
