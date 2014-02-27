@@ -119,7 +119,7 @@ public:
     float voltage_aux() const { return _voltage_aux; }
 
 	/// exhausted - returns true if the voltage remains below the low_voltage for 10 seconds or remaining capacity falls below min_capacity
-    bool exhausted_aux(float low_voltage, float min_capacity_mah);
+    bool exhausted_aux(float low_voltage);
 
 
 
