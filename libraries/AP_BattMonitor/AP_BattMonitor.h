@@ -63,7 +63,7 @@
 #endif
 
 // AUX battery monitor
-#define AP_BATT_AUX_VOLT_PIN				6
+#define AP_BATT_AUX_VOLT_PIN				4
 #define AP_BATT_AUX_VOLTDIVIDER_DEFAULT  10.1
 
 // Other values normally set directly by mission planner
