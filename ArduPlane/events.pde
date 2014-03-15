@@ -107,8 +107,8 @@ void low_battery_event(void)
     if (failsafe.low_battery) {
         return;
     }
-    gcs_send_text_fmt(PSTR("Low Battery %.2fV Used %.0f mAh"),
-                      battery.voltage(), battery.current_total_mah());
+    gcs_send_text_fmt(PSTR("Low Battery %.2fV Used %.0f mAh. Aux voltage %.2fV"),
+			battery.voltage(), battery.current_total_mah(), battery.voltage_aux());
     set_mode(RTL);
     aparm.throttle_cruise.load();
     failsafe.low_battery = true;

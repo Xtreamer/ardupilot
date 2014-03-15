@@ -429,6 +429,7 @@ struct PACKED log_Current {
     int16_t current_amps;
     uint16_t board_voltage;
     float   current_total;
+	int16_t	 battery_voltage_aux;
 };
 
 struct PACKED log_Arm_Disarm {
@@ -447,7 +448,8 @@ static void Log_Write_Current()
         battery_voltage         : (int16_t)(battery.voltage() * 100.0),
         current_amps            : (int16_t)(battery.current_amps() * 100.0),
         board_voltage           : (uint16_t)(hal.analogin->board_voltage()*1000),
-        current_total           : battery.current_total_mah()
+		current_total           : battery.current_total_mah(),
+		battery_voltage_aux		: (int16_t) (battery.voltage_aux() * 100.0f)
     };
     DataFlash.WriteBlock(&pkt, sizeof(pkt));
 
