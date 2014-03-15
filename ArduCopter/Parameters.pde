@@ -131,6 +131,14 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @User: Standard
     GSCALAR(fs_batt_mah,            "FS_BATT_MAH", FS_BATT_MAH_DEFAULT),
 
+	// @Param: FS_AUX_VOLTAGE
+    // @DisplayName: Failsafe aux battery voltage
+    // @Description: Battery voltage to trigger failsafe. Set to 0 to disable battery voltage failsafe. If the battery voltage drops below this voltage continuously for 10 seconds then the plane will switch to RTL mode
+    // @Units: Volts
+    // @Increment: 0.1
+    // @User: Standard
+    GSCALAR(fs_batt_aux_voltage,        "FS_AUX_VOLTAGE", FS_BATT_VOLTAGE_DEFAULT),
+
     // @Param: FS_GPS_ENABLE
     // @DisplayName: GPS Failsafe Enable
     // @Description: Controls what action will be taken if GPS signal is lost for at least 5 seconds

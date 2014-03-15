@@ -98,10 +98,12 @@ static void read_battery(void)
     if (battery.monitoring() == AP_BATT_MONITOR_VOLTAGE_AND_CURRENT) {
         compass.set_current(battery.current_amps());
     }
-
+	
     // check for low voltage or current if the low voltage check hasn't already been triggered
-    // we only check when we're not powered by USB to avoid false alarms during bench tests
-    if (!ap.usb_connected && !failsafe.battery && battery.exhausted(g.fs_batt_voltage, g.fs_batt_mah)) {
+    // we only check when we're not powered by USB to avoid false alarms during bench tests	
+    if (!ap.usb_connected 
+			&& !failsafe.battery 
+			&& (battery.exhausted(g.fs_batt_voltage, g.fs_batt_mah) || battery.exhausted_aux(g.fs_batt_aux_voltage))) {
         failsafe_battery_event();
     }
 }

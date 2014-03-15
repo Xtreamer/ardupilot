@@ -109,6 +109,7 @@ static void report_batt_monitor()
     if (battery.monitoring() == AP_BATT_MONITOR_DISABLED) print_enabled(false);
     if (battery.monitoring() == AP_BATT_MONITOR_VOLTAGE_ONLY) cliSerial->printf_P(PSTR("volts"));
     if (battery.monitoring() == AP_BATT_MONITOR_VOLTAGE_AND_CURRENT) cliSerial->printf_P(PSTR("volts and cur"));
+	if (battery.monitoring_aux() == AP_AUX_BATT_MONITOR_ENABLED) cliSerial->printf_P(PSTR("aux voltage monitoring enabled"));
     print_blanks(2);
 }
 
